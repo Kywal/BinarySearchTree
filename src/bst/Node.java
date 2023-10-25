@@ -4,12 +4,12 @@ public class Node {
 	private int value;
 	private Node left;
 	private Node right;
-	private int left_size;
-	private int right_size;
+	private int leftSize;
+	private int rightSize;
 	
 	public Node() {
-		left_size = 0;
-		right_size = 0;
+		leftSize = 0;
+		rightSize = 0;
 	}
 	public int getValue() {
 		return value;
@@ -29,18 +29,20 @@ public class Node {
 	public void setRight(Node right) {
 		this.right = right;
 	}
-	public int getLeft_size() {
-		return left_size;
+	public int getLeftSize() {
+		return leftSize;
 	}
-	public void setLeft_size(int left_size) {
-		this.left_size = left_size;
+	public void setLeftSize(int left_size) {
+		this.leftSize = left_size;
 	}
-	public int getRight_size() {
-		return right_size;
+	public int getRightSize() {
+		return rightSize;
 	}
-	public void setRight_size(int right_size) {
-		this.right_size = right_size;
+	public void setRightSize(int right_size) {
+		this.rightSize = right_size;
 	}
 	
-	
+	public String toString() {
+		return String.format("{ valor: %d, cnt_esquerda: %d, cnt_direita: %d }", value, leftSize, rightSize);
+	}
 }
