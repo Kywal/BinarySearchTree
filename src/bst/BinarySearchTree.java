@@ -37,7 +37,85 @@ public class BinarySearchTree {
 	}
 	
 	
+	/**
+	 * Remove o valor especificado se ele existir. Caso contrário, não faz nada
+	 * @param value Valor para ser removido
+	 * @return booleano que indica se algum valor foi removido ou não
+	 */
+	public boolean remove(int value) {
+		return auxRemove(root, null, value);
+	}
 	
+	private boolean auxRemove(Node curr, Node parent, int key) {
+		if(curr.getValue() == key) {
+			if(curr.getLeft() == null && curr.getRight() == null) {
+				// Caso 1 : É folha
+				if(parent == null) {
+					root = null;
+				} else {
+					if(parent.getValue() > key) {
+						parent.setLeft(null);
+					} else {
+						parent.setRight(null);
+					}
+				}
+			} else if (curr.getLeft() == null) {
+				// Caso 2 : Somente possui a subárvore direita
+				if(parent == null) {
+					root = root.getRight();
+				} else {
+					if(parent.getValue() > key) {
+						parent.setLeft(curr.getRight());
+					} else {
+						parent.setRight(curr.getRight());
+					}
+				}
+			} else if (curr.getRight() == null) {
+				// Caso 3 : Somente possui a subárvore esquerda
+				if(parent == null) {
+					root = root.getLeft();
+				} else {
+					if(parent.getValue() > key) {
+						parent.setLeft(curr.getLeft());
+					} else {
+						parent.setRight(curr.getLeft());
+					}
+				}
+			} else {
+				// Caso 4 : Possui as duas subárvores
+				int newValue = getLeftmost(curr.getRight());
+				curr.setValue(newValue);
+				auxRemove(curr.getRight(), curr, newValue);
+				curr.setRightSize(curr.getRightSize() - 1);
+			}
+			
+			
+			return true;
+		}
+		
+		if(key > curr.getValue() && curr.getRight() != null) {
+			boolean removed = auxRemove(curr.getRight(), curr, key);
+			if(removed) {
+				curr.setRightSize(curr.getRightSize() - 1);
+			}
+			return removed;
+		}
+		
+		if(key < curr.getValue() && curr.getLeft() != null) {
+			boolean removed = auxRemove(curr.getLeft(), curr, key);
+			if(removed) {
+				curr.setLeftSize(curr.getLeftSize() - 1);
+			}
+			return removed;
+		}
+		
+		return false;
+	}
+	
+	private int getLeftmost(Node n) {
+		if(n.getLeft() == null) return n.getValue();
+		return getLeftmost(n.getLeft());
+	}
 	// Só para teste, lembrar de deletar antes de enviar o trabalho
 	public void setRoot(Node n) {
 		root = n;
@@ -47,7 +125,10 @@ public class BinarySearchTree {
 		return root;
 	}
 	
-	
+	/**
+	 * Imprime os nós em pré-ordem.
+	 * @param n O nó raiz da subárvore atual
+	 */
 	public void preOrder(Node n) {
 		System.out.println(n.toString());
 		if(n.getLeft() != null) preOrder(n.getLeft());

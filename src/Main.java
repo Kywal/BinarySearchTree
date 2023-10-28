@@ -32,7 +32,7 @@ public class Main {
 		bst.setRoot(n1);
 		
 		bst.preOrder(bst.getRoot());
-		bst.remove(3);
+		bst.remove(6);
 		System.out.println("#############");
 		bst.preOrder(bst.getRoot());
 	}
