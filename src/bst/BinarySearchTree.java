@@ -2,6 +2,7 @@ package bst;
 
 public class BinarySearchTree {
 	private Node root;
+	private int size;
 	
 	
 	/**
@@ -46,6 +47,13 @@ public class BinarySearchTree {
 		return auxRemove(root, null, value);
 	}
 	
+	/**
+	 * Função auxiliar que remove um elemento de uma subárvore e atualiza as subárvores do pai
+	 * @param curr Nó raiz da subárvore a ser considerada
+	 * @param parent O pai da raíz da subárvore
+	 * @param key Chave para ser removida
+	 * @return True se conseguiu remover um elemento, False caso contrário
+	 */
 	private boolean auxRemove(Node curr, Node parent, int key) {
 		if(curr.getValue() == key) {
 			if(curr.getLeft() == null && curr.getRight() == null) {
@@ -89,7 +97,7 @@ public class BinarySearchTree {
 				curr.setRightSize(curr.getRightSize() - 1);
 			}
 			
-			
+			size = size - 1;
 			return true;
 		}
 		
@@ -112,10 +120,16 @@ public class BinarySearchTree {
 		return false;
 	}
 	
+	/**
+	 * Retorna o nó mais a esquerda de uma subárvore
+	 * @param n Nó raíz da subárvore
+	 * @return O que ta dizendo
+	 */
 	private int getLeftmost(Node n) {
 		if(n.getLeft() == null) return n.getValue();
 		return getLeftmost(n.getLeft());
 	}
+	
 	// Só para teste, lembrar de deletar antes de enviar o trabalho
 	public void setRoot(Node n) {
 		root = n;
@@ -135,4 +149,89 @@ public class BinarySearchTree {
 		if(n.getRight() != null) preOrder(n.getRight());
 	}
 	
+	/**
+	 * Retorna o n-ésimo elemento da árvore considerando a ordem simétrica
+	 * @param n Posição do elemento
+	 * @return O que da dizendo
+	 */
+	public int enesimoElemento(int n) {
+		return auxEnesimo(root, n);
+	}
+	
+	/**
+	 * Função auxiliar que retorna o n-ésimo elemento de uma subárvore (ordem simétrica)
+	 * @param n Nó raiz da subárvore
+	 * @param pos Posição do valor
+	 * @return O n-ésimo elemento da subárvore na ordem simétrica
+	 */
+	private int auxEnesimo(Node n, int pos) {
+		if(n.getLeft() == null && n.getRight() == null) {
+			return n.getValue();
+		}
+		
+		if(pos == n.getLeftSize() + 1) {
+			return n.getValue();
+		}
+		
+		if(pos <= n.getLeftSize()) {
+			return auxEnesimo(n.getLeft(), pos);
+		}
+		
+		int newPos = pos - (n.getLeftSize() + 1);
+		return auxEnesimo(n.getRight(), newPos);
+	}
+	
+	
+	/**
+	 * Retorna a posição do elemento x na ordem simétrica
+	 * @param x Valor a ser procurado
+	 * @return A posição de x. Retorna -1 caso x não exista
+	 */
+	public int posicao(int x) {
+		return auxPosicao(root, x, 0);
+	}
+	
+	/**
+	 * Função auxiliar que retorna a posição de x na ordem simétrica
+	 * @param curr Nó raiz da subárvore atual
+	 * @param key Chave a ser procurada
+	 * @param acc Quantos valores vem antes de x na ordem simétrica FORA desta subárvore
+	 * @return a posição x na ordem simétrica em relação a árvore inteira. -1 Caso x não exista
+	 */
+	private int auxPosicao(Node curr, int key, int acc) {
+		if(curr.getValue() == key) {
+			return curr.getLeftSize() + acc + 1;
+		}
+		
+		if(key < curr.getValue() && curr.getLeft() != null) {
+			return auxPosicao(curr.getLeft(), key, acc);
+		}
+		
+		if(key > curr.getValue() && curr.getRight() != null) {
+			return auxPosicao(curr.getRight(), key, acc + curr.getLeftSize() + 1);
+		}
+		
+		return -1;
+	}
+	
+	// Apenas para teste - Lembrar de remover
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+	
+	/**
+	 * Calcula a mediana dos valores considerando a ordem simétrica
+	 * @return Isso aí mesmo
+	 */
+	public int mediana() {
+		if(size % 2 == 0) {
+			return (enesimoElemento(size / 2) + enesimoElemento(size / 2 + 1)) / 2;
+		}
+		
+		return enesimoElemento(size / 2 + 1);
+	}
 }

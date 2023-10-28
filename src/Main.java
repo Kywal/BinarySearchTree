@@ -6,6 +6,7 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		BinarySearchTree bst = new BinarySearchTree();
+		bst.setSize(5);
 		Node n1 = new Node();
 		n1.setValue(5);
 		n1.setLeftSize(1);
@@ -32,9 +33,16 @@ public class Main {
 		bst.setRoot(n1);
 		
 		bst.preOrder(bst.getRoot());
-		bst.remove(6);
+		//bst.remove(6);
 		System.out.println("#############");
 		bst.preOrder(bst.getRoot());
+		System.out.println("#############");
+		/*for(int i=1; i<=5; i++) {
+			System.out.println(bst.enesimoElemento(i));
+		}*/
+		
+		System.out.println(bst.posicao(5));
+		System.out.println(bst.mediana());
 	}
 
 }
