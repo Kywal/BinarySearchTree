@@ -1,3 +1,5 @@
+package tests;
+
 import bst.BinarySearchTree;
 import bst.Node;
 

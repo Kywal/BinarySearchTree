@@ -1,12 +1,17 @@
+/**
+ * @author Emanuel Kywal e Ian Gabriel
+ */
+
 package bst;
 
-public class BinarySearchTree {
+public class BinarySearchTree {	
+	
 	private Node root;
 	private int size;
 	
 	
 	/**
-	 * Procura pelo valor na ABB
+	 * @ Procura pelo valor na ABB
 	 * @param value O valor a ser procurado
 	 * @return O objeto Node que contém o valor especificado
 	 */
@@ -37,6 +42,61 @@ public class BinarySearchTree {
 		return null;
 	}
 	
+	/**
+	 * @description Insere um novo valor na árvore. Caso o valor já esteja na árvore, não o insere.
+	 * 
+	 * @param value Valor a ser inserido.
+	 * @return true Quando a inserção ocorrer com sucesso.
+	 * @return false Quando o valor inserido já está na árvore, a inserção não ocorre. 
+	 */
+	public boolean insert(int value) {
+		if(root == null) {
+			root = new Node();
+			root.setValue(value);
+			return true; 			
+		} else {
+			return auxInsert(root, value);
+		}
+	}
+	
+	/**
+	 * @description Função auxiliar que percorre recursivamente a árvore 
+	 * até o local adequado da inserção e a executa.
+	 * 
+	 * @param curr Nó atual.
+	 * @param value Valor a ser inserido.
+	 * @return true Quando a inserção ocorrer com sucesso.
+	 * @return false Quando o valor inserido já está na árvore, a inserção não ocorre. 
+	 */
+	private boolean auxInsert(Node curr, int value) {
+		Node rightNode = curr.getRight();
+		Node leftNode = curr.getLeft();
+		
+		if(value > curr.getValue()) {
+			if(rightNode == null) { 
+				Node newRightNode = new Node();
+				newRightNode.setValue(value);
+				
+				curr.setRight(newRightNode);
+				return true;
+			} else {
+				return auxInsert(rightNode, value);								
+			}
+		} 
+		else if(value < curr.getValue()) {
+			if(leftNode == null) {
+				Node newLeftNode = new Node();
+				newLeftNode.setValue(value);
+
+				curr.setLeft(newLeftNode);
+				return true;
+			} else {
+				return auxInsert(leftNode, value);								
+			}
+		}
+		else return false;
+	}
+
 	
 	/**
 	 * Remove o valor especificado se ele existir. Caso contrário, não faz nada
