@@ -306,4 +306,40 @@ public class BinarySearchTree {
 		
 		return enesimoElemento(size / 2 + 1);
 	}
+	
+	/**
+	 * 
+	 * @param rootValue
+	 * @return
+	 * @throws Exception
+	 */
+	public double media(int rootValue) throws Exception {
+		double sum = 0.0;
+		int nodeAmount = 0;
+		Node root = find(rootValue);
+		
+		if(root != null) {
+			sum = auxMedia(root);
+			nodeAmount = root.getLeftSize() + root.getRightSize() + 1; 			
+		} else {
+			throw new NullPointerException("Valor inserido não pertence à árvore!");
+		}
+				
+		return sum/nodeAmount;
+	}
+	
+	 /**
+	  * 
+	  * @param root
+	  * @return
+	  */
+	public double auxMedia(Node root) {
+		double sum = 0.0;
+		sum += root.getValue();
+		
+		if(root.getLeft() != null) sum += auxMedia(root.getLeft());
+		if(root.getRight() != null) sum += auxMedia(root.getRight());
+		
+		return sum;
+	}
 }

@@ -14,6 +14,7 @@ public class InsertTests {
 		bst.insert(15);
 		bst.insert(25);
 		bst.insert(12);
+		bst.insert(11);
 		bst.preOrder(bst.getRoot());
 		
 		// Insert already existing value
