@@ -78,9 +78,15 @@ public class BinarySearchTree {
 				newRightNode.setValue(value);
 				
 				curr.setRight(newRightNode);
+				curr.setRightSize(curr.getRightSize() + 1);
+				size++;
 				return true;
 			} else {
-				return auxInsert(rightNode, value);								
+				boolean inserted = auxInsert(rightNode, value);
+				if(inserted) {
+					curr.setRightSize(curr.getRightSize() + 1);					
+				}
+				return inserted;								
 			}
 		} 
 		else if(value < curr.getValue()) {
@@ -89,9 +95,15 @@ public class BinarySearchTree {
 				newLeftNode.setValue(value);
 
 				curr.setLeft(newLeftNode);
+				curr.setLeftSize(curr.getLeftSize() + 1);
+				size++;
 				return true;
 			} else {
-				return auxInsert(leftNode, value);								
+				boolean inserted = auxInsert(leftNode, value);
+				if(inserted) {
+					curr.setLeftSize(curr.getLeftSize() + 1);					
+				}
+				return inserted;								
 			}
 		}
 		else return false;
