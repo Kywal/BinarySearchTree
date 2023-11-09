@@ -42,6 +42,8 @@ public class Node {
 		this.rightSize = right_size;
 	}
 	
+	public boolean isLeaf() { return this.getLeft() == null && this.getRight() == null; }
+	
 	public String toString() {
 		return String.format("{ valor: %d, cnt_esquerda: %d, cnt_direita: %d }", value, leftSize, rightSize);
 	}

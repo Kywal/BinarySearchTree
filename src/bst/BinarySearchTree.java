@@ -4,6 +4,8 @@
 
 package bst;
 
+import java.util.Stack;
+
 public class BinarySearchTree {	
 	
 	private Node root;
@@ -342,4 +344,43 @@ public class BinarySearchTree {
 		
 		return sum;
 	}
+	
+	
+	
+	
+	
+	public void imprimeArvore(int modo) {
+		switch(modo) {
+			case 1: 
+				int maxHeight = root.getLeftSize() + root.getRightSize() + 1;
+				printIndentFormat(root, "", maxHeight*3);
+				break;
+			case 2:
+				printPrecedenceFormat(root);
+				break;
+		}
+	}
+	
+	private void printIndentFormat(Node curr, String indent, int depth) {		
+		if(curr.getValue() < 10) {
+			System.out.print(indent + "0" + curr.getValue());
+		}
+		else System.out.print(indent + curr.getValue());
+		
+		for(int i = 0; i < depth; i++) System.out.print("-");
+		System.out.println("");
+		
+		if(curr.getLeft() != null) printIndentFormat(curr.getLeft(), indent + "   ", depth - 3);
+		if(curr.getRight() != null) printIndentFormat(curr.getRight(), indent + "   ", depth - 3);
+	}
+	
+	private void printPrecedenceFormat(Node curr) {
+		System.out.print("(" + curr.getValue());
+		
+		if(curr.getLeft() != null) printPrecedenceFormat(curr.getLeft());
+		if(curr.getRight() != null) printPrecedenceFormat(curr.getRight());
+		
+		System.out.print(")");
+	}
+	
 }
