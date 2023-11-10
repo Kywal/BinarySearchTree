@@ -8,7 +8,6 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		BinarySearchTree bst = new BinarySearchTree();
-		bst.setSize(5);
 		Node n1 = new Node();
 		n1.setValue(5);
 		n1.setLeftSize(1);

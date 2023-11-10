@@ -6,10 +6,26 @@ public class Node {
 	private Node right;
 	private int leftSize;
 	private int rightSize;
+	private int height;
+	private int subtreeSum;
 	
 	public Node() {
 		leftSize = 0;
 		rightSize = 0;
+		subtreeSum = 0;
+		height = 1;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	public int getSubtreeSum() {
+		return subtreeSum;
+	}
+	public void setSubtreeSum(int subtreeSum) {
+		this.subtreeSum = subtreeSum;
 	}
 	public int getValue() {
 		return value;

@@ -9,7 +9,6 @@ import java.util.Stack;
 public class BinarySearchTree {	
 	
 	private Node root;
-	private int size;
 	
 	
 	/**
@@ -71,45 +70,69 @@ public class BinarySearchTree {
 	 * @return false Quando o valor inserido já está na árvore, a inserção não ocorre. 
 	 */
 	private boolean auxInsert(Node curr, int value) {
-		Node rightNode = curr.getRight();
-		Node leftNode = curr.getLeft();
-		
-		if(value > curr.getValue()) {
-			if(rightNode == null) { 
-				Node newRightNode = new Node();
-				newRightNode.setValue(value);
-				
-				curr.setRight(newRightNode);
-				curr.setRightSize(curr.getRightSize() + 1);
-				size++;
-				return true;
-			} else {
-				boolean inserted = auxInsert(rightNode, value);
-				if(inserted) {
-					curr.setRightSize(curr.getRightSize() + 1);					
+		try {
+			Node rightNode = curr.getRight();
+			Node leftNode = curr.getLeft();
+			
+			if(value > curr.getValue()) {
+				if(rightNode == null) { 
+					Node newRightNode = new Node();
+					newRightNode.setValue(value);
+					curr.setRight(newRightNode);
+					return true;
+				} else {
+					return auxInsert(rightNode, value);								
 				}
-				return inserted;								
-			}
-		} 
-		else if(value < curr.getValue()) {
-			if(leftNode == null) {
-				Node newLeftNode = new Node();
-				newLeftNode.setValue(value);
-
-				curr.setLeft(newLeftNode);
-				curr.setLeftSize(curr.getLeftSize() + 1);
-				size++;
-				return true;
-			} else {
-				boolean inserted = auxInsert(leftNode, value);
-				if(inserted) {
-					curr.setLeftSize(curr.getLeftSize() + 1);					
+			} 
+			else if(value < curr.getValue()) {
+				if(leftNode == null) {
+					Node newLeftNode = new Node();
+					newLeftNode.setValue(value);
+					curr.setLeft(newLeftNode);
+					return true;
+				} else {
+					return auxInsert(leftNode, value);								
 				}
-				return inserted;								
 			}
+			else return false;
+		} finally {
+			updateHeight(curr);
+			updateSubtreeSize(curr);
 		}
-		else return false;
 	}
+	
+	private void updateHeight(Node curr) {
+		if(curr.getRight() == null && curr.getLeft() != null) {
+			curr.setHeight(curr.getLeft().getHeight() + 1);
+		} else if (curr.getLeft() == null && curr.getRight() != null){
+			curr.setHeight(curr.getRight().getHeight() + 1);
+		} else if (curr.getLeft() != null && curr.getRight() != null) {
+			curr.setHeight(
+					1 + Math.max(
+							curr.getRight().getHeight(), 
+							curr.getLeft().getHeight()
+					)
+			);
+		}
+	}
+	
+	private void updateSubtreeSize(Node curr) {
+		if(curr.getRight() == null) {
+			curr.setRightSize(0);
+		} else {
+			Node right = curr.getRight();
+			curr.setRightSize(right.getLeftSize() + right.getRightSize() + 1);
+		}
+		
+		if(curr.getLeft() == null) {
+			curr.setLeftSize(0);
+		} else {
+			Node left = curr.getLeft();
+			curr.setLeftSize(left.getLeftSize() + left.getRightSize() + 1);
+		}
+	}
+	
+	
 
 	
 	/**
@@ -129,69 +152,65 @@ public class BinarySearchTree {
 	 * @return True se conseguiu remover um elemento, False caso contrário
 	 */
 	private boolean auxRemove(Node curr, Node parent, int key) {
-		if(curr.getValue() == key) {
-			if(curr.getLeft() == null && curr.getRight() == null) {
-				// Caso 1 : É folha
-				if(parent == null) {
-					root = null;
-				} else {
-					if(parent.getValue() > key) {
-						parent.setLeft(null);
+		try {
+			if(curr.getValue() == key) {
+				if(curr.getLeft() == null && curr.getRight() == null) {
+					// Caso 1 : É folha
+					if(parent == null) {
+						root = null;
 					} else {
-						parent.setRight(null);
+						if(parent.getValue() > key) {
+							parent.setLeft(null);
+						} else {
+							parent.setRight(null);
+						}
 					}
-				}
-			} else if (curr.getLeft() == null) {
-				// Caso 2 : Somente possui a subárvore direita
-				if(parent == null) {
-					root = root.getRight();
-				} else {
-					if(parent.getValue() > key) {
-						parent.setLeft(curr.getRight());
+				} else if (curr.getLeft() == null) {
+					// Caso 2 : Somente possui a subárvore direita
+					if(parent == null) {
+						root = root.getRight();
 					} else {
-						parent.setRight(curr.getRight());
+						if(parent.getValue() > key) {
+							parent.setLeft(curr.getRight());
+						} else {
+							parent.setRight(curr.getRight());
+						}
 					}
-				}
-			} else if (curr.getRight() == null) {
-				// Caso 3 : Somente possui a subárvore esquerda
-				if(parent == null) {
-					root = root.getLeft();
-				} else {
-					if(parent.getValue() > key) {
-						parent.setLeft(curr.getLeft());
+				} else if (curr.getRight() == null) {
+					// Caso 3 : Somente possui a subárvore esquerda
+					if(parent == null) {
+						root = root.getLeft();
 					} else {
-						parent.setRight(curr.getLeft());
+						if(parent.getValue() > key) {
+							parent.setLeft(curr.getLeft());
+						} else {
+							parent.setRight(curr.getLeft());
+						}
 					}
+				} else {
+					// Caso 4 : Possui as duas subárvores
+					int newValue = getLeftmost(curr.getRight());
+					curr.setValue(newValue);
+					auxRemove(curr.getRight(), curr, newValue);
 				}
-			} else {
-				// Caso 4 : Possui as duas subárvores
-				int newValue = getLeftmost(curr.getRight());
-				curr.setValue(newValue);
-				auxRemove(curr.getRight(), curr, newValue);
-				curr.setRightSize(curr.getRightSize() - 1);
+				
+				return true;
 			}
 			
-			size = size - 1;
-			return true;
-		}
-		
-		if(key > curr.getValue() && curr.getRight() != null) {
-			boolean removed = auxRemove(curr.getRight(), curr, key);
-			if(removed) {
-				curr.setRightSize(curr.getRightSize() - 1);
+			if(key > curr.getValue() && curr.getRight() != null) {
+				return auxRemove(curr.getRight(), curr, key);
 			}
-			return removed;
-		}
-		
-		if(key < curr.getValue() && curr.getLeft() != null) {
-			boolean removed = auxRemove(curr.getLeft(), curr, key);
-			if(removed) {
-				curr.setLeftSize(curr.getLeftSize() - 1);
+			
+			if(key < curr.getValue() && curr.getLeft() != null) {
+				return auxRemove(curr.getLeft(), curr, key);
 			}
-			return removed;
+			
+			return false;
+		} finally {
+			updateHeight(curr);
+			updateSubtreeSize(curr);
 		}
 		
-		return false;
 	}
 	
 	/**
@@ -288,13 +307,9 @@ public class BinarySearchTree {
 		return -1;
 	}
 	
-	// Apenas para teste - Lembrar de remover
 	public int getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
+		if(root == null) return 0;
+		return root.getLeftSize() + root.getRightSize() + 1;
 	}
 	
 	/**
@@ -302,6 +317,7 @@ public class BinarySearchTree {
 	 * @return Isso aí mesmo
 	 */
 	public int mediana() {
+		int size = getSize();
 		if(size % 2 == 0) {
 			return (enesimoElemento(size / 2) + enesimoElemento(size / 2 + 1)) / 2;
 		}
@@ -368,6 +384,7 @@ public class BinarySearchTree {
 		else System.out.print(indent + curr.getValue());
 		
 		for(int i = 0; i < depth; i++) System.out.print("-");
+		System.out.println(curr.getLeftSize() + " " + curr.getRightSize());
 		System.out.println("");
 		
 		if(curr.getLeft() != null) printIndentFormat(curr.getLeft(), indent + "   ", depth - 3);
