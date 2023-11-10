@@ -4,8 +4,6 @@
 
 package bst;
 
-import java.util.Stack;
-
 public class BinarySearchTree {	
 	
 	private Node root;
@@ -98,6 +96,7 @@ public class BinarySearchTree {
 		} finally {
 			updateHeight(curr);
 			updateSubtreeSize(curr);
+			updateSubtreeSum(curr);
 		}
 	}
 	
@@ -129,6 +128,17 @@ public class BinarySearchTree {
 		} else {
 			Node left = curr.getLeft();
 			curr.setLeftSize(left.getLeftSize() + left.getRightSize() + 1);
+		}
+	}
+	
+	private void updateSubtreeSum(Node curr) {
+		if(curr.getLeft() == null && curr.getRight() != null) {
+			curr.setSubtreeSum(curr.getRight().getSubtreeSum() + curr.getValue());
+		} 
+		else if(curr.getRight() == null && curr.getLeft() != null) {
+			curr.setSubtreeSum(curr.getLeft().getSubtreeSum() + curr.getValue());
+		} else if(curr.getLeft() != null && curr.getRight() != null) {
+			curr.setSubtreeSum(curr.getLeft().getSubtreeSum() + curr.getRight().getSubtreeSum() + curr.getValue());
 		}
 	}
 	
@@ -209,6 +219,7 @@ public class BinarySearchTree {
 		} finally {
 			updateHeight(curr);
 			updateSubtreeSize(curr);
+			updateSubtreeSum(curr);
 		}
 		
 	}
@@ -312,6 +323,13 @@ public class BinarySearchTree {
 		return root.getLeftSize() + root.getRightSize() + 1;
 	}
 	
+	public boolean ehCheia() {
+		int expectatedAmountNodes = (int) Math.pow(2.0, (double) root.getHeight()) - 1;
+		int realAmountNodes = getSize();
+				
+		return expectatedAmountNodes == realAmountNodes;
+	}
+	
 	/**
 	 * Calcula a mediana dos valores considerando a ordem simétrica
 	 * @return Isso aí mesmo
@@ -337,32 +355,14 @@ public class BinarySearchTree {
 		Node root = find(rootValue);
 		
 		if(root != null) {
-			sum = auxMedia(root);
-			nodeAmount = root.getLeftSize() + root.getRightSize() + 1; 			
+			sum = root.getSubtreeSum();
+			nodeAmount = getSize(); 			
 		} else {
 			throw new NullPointerException("Valor inserido não pertence à árvore!");
 		}
 				
 		return sum/nodeAmount;
 	}
-	
-	 /**
-	  * 
-	  * @param root
-	  * @return
-	  */
-	public double auxMedia(Node root) {
-		double sum = 0.0;
-		sum += root.getValue();
-		
-		if(root.getLeft() != null) sum += auxMedia(root.getLeft());
-		if(root.getRight() != null) sum += auxMedia(root.getRight());
-		
-		return sum;
-	}
-	
-	
-	
 	
 	
 	public void imprimeArvore(int modo) {
@@ -374,6 +374,8 @@ public class BinarySearchTree {
 			case 2:
 				printPrecedenceFormat(root);
 				break;
+			default:
+				System.out.println("Modo de impressão inválido!");
 		}
 	}
 	
@@ -384,7 +386,6 @@ public class BinarySearchTree {
 		else System.out.print(indent + curr.getValue());
 		
 		for(int i = 0; i < depth; i++) System.out.print("-");
-		System.out.println(curr.getLeftSize() + " " + curr.getRightSize());
 		System.out.println("");
 		
 		if(curr.getLeft() != null) printIndentFormat(curr.getLeft(), indent + "   ", depth - 3);
