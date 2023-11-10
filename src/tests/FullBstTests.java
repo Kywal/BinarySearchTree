@@ -16,7 +16,7 @@ public class FullBstTests {
 		bst.insert(15);
 		
 		bst.imprimeArvore(1);
-		System.out.println("Essa ABB é cheia?");
+		System.out.println("Essa ABB eh cheia?");
 		System.out.println(bst.ehCheia());
 	}
 

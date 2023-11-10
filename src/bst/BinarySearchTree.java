@@ -330,6 +330,14 @@ public class BinarySearchTree {
 		return expectatedAmountNodes == realAmountNodes;
 	}
 	
+	public boolean ehCompleta() {
+		int lowerBound = (int) Math.pow(2.0, (double) root.getHeight() - 1);
+		int upperBound = (int) Math.pow(2.0, (double) root.getHeight()) - 1;
+		int realAmountNodes = getSize();
+				
+		return realAmountNodes >= lowerBound && realAmountNodes <= upperBound; 
+	}
+	
 	/**
 	 * Calcula a mediana dos valores considerando a ordem simétrica
 	 * @return Isso aí mesmo
