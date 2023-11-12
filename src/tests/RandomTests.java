@@ -3,7 +3,7 @@ package tests;
 import bst.BinarySearchTree;
 import bst.Node;
 
-public class Main {
+public class RandomTests {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
