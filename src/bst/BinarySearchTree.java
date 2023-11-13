@@ -100,6 +100,10 @@ public class BinarySearchTree {
 		}
 	}
 	
+	/**
+	 * Atualiza a altura de um nó
+	 * @param curr Nó para ser atualizado
+	 */
 	private void updateHeight(Node curr) {
 		if(curr.getRight() == null && curr.getLeft() != null) {
 			curr.setHeight(curr.getLeft().getHeight() + 1);
@@ -115,6 +119,10 @@ public class BinarySearchTree {
 		}
 	}
 	
+	/**
+	 * Atualiza os atributos de tamanhos de subárvore de um nó
+	 * @param curr Nó para ser atualizado
+	 */
 	private void updateSubtreeSize(Node curr) {
 		if(curr.getRight() == null) {
 			curr.setRightSize(0);
@@ -131,6 +139,11 @@ public class BinarySearchTree {
 		}
 	}
 	
+	/**
+	 * Atualiza o atributo de soma dos valores da subárvore em que este nó é raíz.
+	 * A soma inclui este nó
+	 * @param curr Nó para ser atualizado
+	 */
 	private void updateSubtreeSum(Node curr) {
 		if(curr.getLeft() == null && curr.getRight() != null) {
 			curr.setSubtreeSum(curr.getRight().getSubtreeSum() + curr.getValue());
@@ -220,7 +233,6 @@ public class BinarySearchTree {
 			updateHeight(curr);
 			updateSubtreeSize(curr);
 			updateSubtreeSum(curr);
-			System.out.println(curr);
 		}
 		
 	}
@@ -240,6 +252,9 @@ public class BinarySearchTree {
 		root = n;
 	}
 	
+	/**
+	 * @return O nó raíz desta ABB
+	 */
 	public Node getRoot() {
 		return root;
 	}
@@ -319,11 +334,17 @@ public class BinarySearchTree {
 		return -1;
 	}
 	
+	/**
+	 * @return A quantidade de nós da árvore
+	 */
 	public int getSize() {
 		if(root == null) return 0;
 		return root.getLeftSize() + root.getRightSize() + 1;
 	}
 	
+	/**
+	 * @return True se a árvore for cheia, False c.c
+	 */
 	public boolean ehCheia() {
 		int expectatedAmountNodes = (int) Math.pow(2.0, (double) root.getHeight()) - 1;
 		int realAmountNodes = getSize();
@@ -331,6 +352,10 @@ public class BinarySearchTree {
 		return expectatedAmountNodes == realAmountNodes;
 	}
 	
+	/**
+	 * 
+	 * @return True se a árvore é completa, False c.c
+	 */
 	public boolean ehCompleta() {
 		int lowerBound = (int) Math.pow(2.0, (double) root.getHeight() - 1);
 		int upperBound = (int) Math.pow(2.0, (double) root.getHeight()) - 1;
@@ -353,10 +378,12 @@ public class BinarySearchTree {
 	}
 	
 	/**
+	 * Retorna a média dos valores dos nós em que a raíz possui o 
+	 * valor recebido.
 	 * 
-	 * @param rootValue
-	 * @return
-	 * @throws Exception
+	 * @param rootValue O valor a ser procurado
+	 * @return A média aritmética dos nós da subárvore em que a raíz possui o valor x
+	 * @throws NullPointerException O valor não foi encontrado
 	 */
 	public double media(int rootValue) throws NullPointerException {
 		double sum = 0.0;
@@ -374,6 +401,12 @@ public class BinarySearchTree {
 	}
 	
 	
+	/**
+	 * Imprime árvore de duas maneiras possíveis.
+	 * @param modo Modo de impressão da árvore
+	 * 1 - Modo em identação
+	 * 2 - Modo em parênteses
+	 */
 	public void imprimeArvore(int modo) {
 		switch(modo) {
 			case 1: 
@@ -389,6 +422,12 @@ public class BinarySearchTree {
 		}
 	}
 	
+	/**
+	 * Função auxiliar que printa a árvore no modo de indentação
+	 * @param curr Nó da subárvore atual
+	 * @param indent Acumulador de indentações
+	 * @param depth Profundidade atual
+	 */
 	private void printIndentFormat(Node curr, String indent, int depth) {		
 		if(curr.getValue() < 10) {
 			System.out.print(indent + "0" + curr.getValue());
@@ -402,6 +441,10 @@ public class BinarySearchTree {
 		if(curr.getRight() != null) printIndentFormat(curr.getRight(), indent + "   ", depth - 3);
 	}
 	
+	/**
+	 * Printa a subárvore em modo de parênteses
+	 * @param curr Nó raíz da subárvore
+	 */
 	private void printPrecedenceFormat(Node curr) {
 		System.out.print(" (" + curr.getValue());
 		
