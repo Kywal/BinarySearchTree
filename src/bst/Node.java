@@ -31,8 +31,8 @@ public class Node {
 		return value;
 	}
 	public void setValue(int value) {
+		this.subtreeSum = this.subtreeSum - this.value + value;
 		this.value = value;
-		this.subtreeSum = value;
 	}
 	public Node getLeft() {
 		return left;
@@ -62,6 +62,9 @@ public class Node {
 	public boolean isLeaf() { return this.getLeft() == null && this.getRight() == null; }
 	
 	public String toString() {
-		return String.format("{ valor: %d, cnt_esquerda: %d, cnt_direita: %d }", value, leftSize, rightSize);
+		return String.format(
+				"{ valor: %d, cnt_esquerda: %d, cnt_direita: %d, altura: %d, soma: %d}", 
+				value, leftSize, rightSize, height, subtreeSum
+		);
 	}
 }

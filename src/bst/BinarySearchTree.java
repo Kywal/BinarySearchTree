@@ -199,9 +199,9 @@ public class BinarySearchTree {
 					}
 				} else {
 					// Caso 4 : Possui as duas subárvores
-					int newValue = getLeftmost(curr.getRight());
+					int newValue = getRightmost(curr.getLeft());
 					curr.setValue(newValue);
-					auxRemove(curr.getRight(), curr, newValue);
+					auxRemove(curr.getLeft(), curr, newValue);
 				}
 				
 				return true;
@@ -220,18 +220,19 @@ public class BinarySearchTree {
 			updateHeight(curr);
 			updateSubtreeSize(curr);
 			updateSubtreeSum(curr);
+			System.out.println(curr);
 		}
 		
 	}
 	
 	/**
-	 * Retorna o nó mais a esquerda de uma subárvore
+	 * Retorna o valor do nó mais a direita de uma subárvore
 	 * @param n Nó raíz da subárvore
 	 * @return O que ta dizendo
 	 */
-	private int getLeftmost(Node n) {
-		if(n.getLeft() == null) return n.getValue();
-		return getLeftmost(n.getLeft());
+	private int getRightmost(Node n) {
+		if(n.getRight() == null) return n.getValue();
+		return getRightmost(n.getRight());
 	}
 	
 	// Só para teste, lembrar de deletar antes de enviar o trabalho
@@ -345,7 +346,7 @@ public class BinarySearchTree {
 	public int mediana() {
 		int size = getSize();
 		if(size % 2 == 0) {
-			return (enesimoElemento(size / 2) + enesimoElemento(size / 2 + 1)) / 2;
+			return enesimoElemento(size / 2);
 		}
 		
 		return enesimoElemento(size / 2 + 1);

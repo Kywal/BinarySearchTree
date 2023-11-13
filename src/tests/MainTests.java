@@ -142,7 +142,9 @@ public class MainTests {
 					comand = comands.get(++j);
 					value = Integer.parseInt(comand);
 					try {
+						System.out.println("###########");
 						System.out.println("Media: " + bst.media(value));
+						System.out.println("###########");
 					} catch (NullPointerException e) {
 						System.out.println(e.getMessage());
 						e.printStackTrace();
