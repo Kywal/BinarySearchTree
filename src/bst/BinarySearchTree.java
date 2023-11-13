@@ -248,7 +248,7 @@ public class BinarySearchTree {
 	 * @param n O nó raiz da subárvore atual
 	 */
 	public void preOrder(Node n) {
-		System.out.println(n.toString());
+		System.out.print(n.getValue() + " ");
 		if(n.getLeft() != null) preOrder(n.getLeft());
 		if(n.getRight() != null) preOrder(n.getRight());
 	}
@@ -357,18 +357,18 @@ public class BinarySearchTree {
 	 * @return
 	 * @throws Exception
 	 */
-	public double media(int rootValue) throws Exception {
+	public double media(int rootValue) throws NullPointerException {
 		double sum = 0.0;
 		int nodeAmount = 0;
-		Node root = find(rootValue);
+		Node fakeRoot = find(rootValue);
 		
-		if(root != null) {
-			sum = root.getSubtreeSum();
-			nodeAmount = getSize(); 			
+		if(fakeRoot != null) {
+			sum = fakeRoot.getSubtreeSum();
+			nodeAmount = fakeRoot.getLeftSize() + fakeRoot.getRightSize() + 1; 			
 		} else {
 			throw new NullPointerException("Valor inserido não pertence à árvore!");
 		}
-				
+	
 		return sum/nodeAmount;
 	}
 	
@@ -381,6 +381,7 @@ public class BinarySearchTree {
 				break;
 			case 2:
 				printPrecedenceFormat(root);
+				System.out.println("");
 				break;
 			default:
 				System.out.println("Modo de impressão inválido!");
@@ -401,7 +402,7 @@ public class BinarySearchTree {
 	}
 	
 	private void printPrecedenceFormat(Node curr) {
-		System.out.print("(" + curr.getValue());
+		System.out.print(" (" + curr.getValue());
 		
 		if(curr.getLeft() != null) printPrecedenceFormat(curr.getLeft());
 		if(curr.getRight() != null) printPrecedenceFormat(curr.getRight());
